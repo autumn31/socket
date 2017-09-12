@@ -33,10 +33,16 @@ func (srv *Server) Run() {
 
 func handle(conn net.Conn) {
 	scanner := bufio.NewScanner(conn)
+	// time.Sleep(time.Second * 10)
 	for {
 		success := scanner.Scan()
 		if !success {
-			fmt.Println(scanner.Err())
+			if err := scanner.Err(); err == nil {
+				fmt.Println("EOF")
+			} else {
+				fmt.Println(err)
+			}
+			break
 		} else {
 			fmt.Println(string(scanner.Bytes()))
 		}
